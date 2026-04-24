@@ -1,15 +1,14 @@
 {
-"name": "Strawberry Patch Eggs",
-"short_name": "Strawberry",
-"start_url": "index.html",
-"display": "standalone",
-"background_color": "#fdf6ee",
-"theme_color": "#c0392b",
-"icons": [
-{
-"src": "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/512x512/1f353.png",
-"sizes": "512x512",
-"type": "image/png"
-}
-]
+  "name": "Strawberry Patch Eggs",
+  "short_name": "Strawberry Patch",
+  "description": "Track and sell fresh backyard eggs",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fdf6ee",
+  "theme_color": "#c0392b",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
 }
