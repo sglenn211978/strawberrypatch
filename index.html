@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="theme-color" content="#c0392b"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Strawberry Patch"/>
+<title>Strawberry Patch Eggs</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lora:ital,wght@0,400;0,600;1,400&family=Caveat:wght@500;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+--red:#c0392b;--red-dark:#922b21;--red-light:#e74c3c;--red-pale:#fdecea;
+--green:#3a6b35;--green-mid:#5a9e52;--green-pale:#eaf4e8;
+--cream:#fdf6ee;--tan:#e8d5b7;--brown:#7d4e2d;
+--text:#2d1a0e;--muted:#9b7b5a;--white:#ffffff;
+--shadow-sm:0 2px 8px rgba(90,40,10,.12);--shadow:0 4px 20px rgba(90,40,10,.18);
+--radius:16px;--radius-sm:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Lora',Georgia,serif;background:var(--cream);color:var(--text);min-height:100dvh;overflow-x:hidden}
+.screen{display:none;min-height:100dvh;position:relative;z-index:1}
+.screen.active{display:block}
+#scr-welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;background:var(--red);text-align:center;}
+.welcome-logo{font-size:5rem;margin-bottom:16px;}
+.welcome-title{font-family:'Abril Fatface',cursive;font-size:2.2rem;color:#fff;}
+.role-card{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.25);border-radius:var(--radius);padding:20px;margin-bottom:12px;width:100%;max-width:340px;cursor:pointer;display:flex;align-items:center;gap:16px;}
+.stats-strip{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:20px;}
+.strip-stat{background:var(--white);border-radius:var(--radius-sm);padding:15px;text-align:center;box-shadow:var(--shadow);}
+.strip-val{font-family:'Abril Fatface',cursive;font-size:2rem;color:var(--red)}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:10px 20px;border-radius:999px;opacity:0;transition:opacity 0.3s;}
+
+#toast.show{opacity:1;}
+</style>
+</head>
+<body>
+<div class="screen active" id="scr-welcome">
+<div class="welcome-logo"> </div>
+<h1 class="welcome-title">Strawberry Patch</h1>
+<div class="role-card" onclick="showScreen('scr-owner')">
+<span> </span><div><h3>Owner</h3></div>
+</div>
+</div>
+<div class="screen" id="scr-owner">
+<div class="stats-strip">
+<div class="strip-stat">
+<div class="strip-val" id="stat-chicken">0</div>
+<div class="strip-lbl">Chicken Eggs</div>
+<button onclick="adjustInventory('chicken', 1)">+</button>
+</div>
+<div class="strip-stat">
+<div class="strip-val" id="stat-duck">0</div>
+<div class="strip-lbl">Duck Eggs</div>
+<button onclick="adjustInventory('duck', 1)">+</button>
+</div>
+</div>
+<button onclick="showScreen('scr-welcome')">Back</button>
+</div>
+<div id="toast">Saved!</div>
+<script>
+let state = {
+inventory: { chicken: 0, duck: 0 }
+};
+function showScreen(id) {
+document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+}
+function saveToDisk() {
+localStorage.setItem('strawberry_patch_eggs', JSON.stringify(state));
+showToast("Data Saved!");
+}
+function loadFromDisk() {
+const saved = localStorage.getItem('strawberry_patch_eggs');
+if (saved) {
+state = JSON.parse(saved);
+
+refreshUI();
+}
+}
+function refreshUI() {
+document.getElementById('stat-chicken').innerText = state.inventory.chicken;
+document.getElementById('stat-duck').innerText = state.inventory.duck;
+}
+function adjustInventory(type, amount) {
+state.inventory[type] = Math.max(0, state.inventory[type] + amount);
+refreshUI();
+saveToDisk();
+}
+function showToast(msg) {
+const t = document.getElementById('toast');
+t.innerText = msg;
+t.classList.add('show');
+setTimeout(() => t.classList.remove('show'), 2000);
+}
+window.addEventListener('load', () => {
+loadFromDisk();
+if ('serviceWorker' in navigator) {
+navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+});
+</script>
+</body>
+</html>
