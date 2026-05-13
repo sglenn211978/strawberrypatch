@@ -1,73 +1,460 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<meta name="theme-color" content="#c0392b"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-title" content="Strawberry Patch"/>
-<title>Strawberry Patch Eggs</title>
-<link rel="manifest" href="manifest.json"/>
-<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lora:ital,wght@0,400;0,600;1,400&family=Caveat:wght@500;700&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Strawberry Patch Eggs – Fresh Local Eggs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "eefcd664-dc0b-47c3-ae68-c2d4f1d26869",
-    });
-  });
-</script>
+  <style>
+    :root {
+      /* Strawberry reds & pinks */
+      --berry-50:#fff1f2;--berry-100:#ffe4e6;--berry-200:#fecdd3;
+      --berry-400:#fb7185;--berry-500:#e11d48;--berry-600:#be123c;--berry-700:#9f1239;
 
-<style>
-/* Include all CSS from your repo here */
-/* Added Responsive Desktop Support */
-@media (min-width: 768px) {
-  body { display: flex; justify-content: center; padding: 40px 0; background: #e2e2e2; }
-  .scr { border-radius: 24px; max-width: 500px; height: 90vh; margin: 0 auto; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-}
-/* Ensure screens are hidden by default */
-.scr { display: none; min-height: 100dvh; background: var(--cream); }
-.scr.on { display: block; }
-</style>
+      /* Warm cream */
+      --cream-50:#fefdf8;--cream-100:#fdf6f0;--cream-200:#fae8e0;--cream-300:#f5d0c0;
+
+      /* Earthy neutrals */
+      --earth-400:#bb8d69;--earth-500:#a87250;--earth-600:#8e5b3f;
+      --earth-700:#744834;--earth-800:#5f3b2c;
+
+      /* Leaf green accent */
+      --leaf-500:#4d7c3f;--leaf-600:#3d6331;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:'Lato',sans-serif;background:var(--cream-50);color:#3d3326;margin:0;min-height:100vh}
+    h1,h2,h3,.serif{font-family:'Playfair Display',Georgia,serif}
+
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pdot{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}
+
+    .float-slow{animation:float 5s ease-in-out infinite}
+    .fu0{animation:fadeUp .7s ease both}
+    .fu1{animation:fadeUp .7s .15s ease both}
+    .fu2{animation:fadeUp .7s .3s ease both}
+    .fu3{animation:fadeUp .7s .45s ease both}
+    .pdot{animation:pdot 1.8s ease-in-out infinite}
+
+    /* Nav */
+    #nav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(254,253,248,.93);backdrop-filter:blur(8px);transition:box-shadow .3s}
+    #nav.scrolled{box-shadow:0 2px 16px rgba(0,0,0,.08)}
+
+    /* Cards */
+    .card{background:#fff;border-radius:1.5rem;overflow:hidden;border:1px solid var(--cream-200);box-shadow:0 2px 12px rgba(180,60,80,.07);transition:transform .25s,box-shadow .25s}
+    .card:hover{transform:translateY(-5px);box-shadow:0 20px 40px -10px rgba(180,60,80,.18)}
+
+    /* Buttons */
+    .btn{display:inline-block;font-family:'Lato',sans-serif;font-weight:700;border:none;cursor:pointer;text-decoration:none;transition:background .2s,transform .1s}
+    .btn:active{transform:scale(.97)}
+    .btn-red{background:var(--berry-500);color:#fff;border-radius:9999px;padding:.85rem 2rem;font-size:1rem}
+    .btn-red:hover{background:var(--berry-600)}
+    .btn-outline{background:transparent;color:var(--earth-700);border:2px solid var(--cream-300);border-radius:9999px;padding:.8rem 2rem;font-size:1rem}
+    .btn-outline:hover{border-color:var(--berry-500);color:var(--berry-600)}
+    .btn-block{display:block;width:100%;background:var(--berry-600);color:#fff;border-radius:1rem;padding:.85rem;font-size:.95rem;text-align:center;font-family:'Lato',sans-serif;font-weight:700;border:none;cursor:pointer;text-decoration:none;transition:background .2s,transform .1s}
+    .btn-block:hover{background:var(--berry-700)}
+    .btn-block:active{transform:scale(.98)}
+
+    /* Form */
+    .fi{width:100%;border:1.5px solid var(--cream-300);border-radius:.75rem;padding:.75rem 1rem;font-family:'Lato',sans-serif;font-size:1rem;color:#3d3326;background:var(--cream-50);outline:none;transition:border-color .2s,box-shadow .2s}
+    .fi:focus{border-color:var(--berry-400);box-shadow:0 0 0 3px rgba(225,29,72,.12)}
+
+    /* Payment radio */
+    .pr input[type=radio]{display:none}
+    .pr label{display:block;border:2px solid var(--cream-300);border-radius:.75rem;padding:.7rem .4rem;text-align:center;font-weight:700;font-size:.8rem;color:var(--earth-600);cursor:pointer;transition:all .2s}
+    .pr input[type=radio]:checked+label{background:var(--berry-500);color:#fff;border-color:var(--berry-500)}
+
+    /* Modal */
+    #modal{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);align-items:flex-end;justify-content:center;padding:1rem}
+    #modal.open{display:flex}
+    @media(min-width:640px){#modal{align-items:center}}
+    .mbox{background:#fff;border-radius:1.5rem;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:0 25px 60px rgba(0,0,0,.25)}
+
+    section{scroll-margin-top:68px}
+    .wave{position:absolute;bottom:-2px;left:0;right:0;width:100%}
+    .egg{border-radius:50% 50% 50% 50%/60% 60% 40% 40%}
+  </style>
 </head>
 <body>
 
+<!-- NAV -->
+<nav id="nav">
+  <div style="max-width:72rem;margin:0 auto;padding:.75rem 1rem;display:flex;align-items:center;justify-content:space-between">
+    <a href="#hero" style="display:flex;align-items:center;gap:.5rem;text-decoration:none">
+      <span style="font-size:1.75rem">🍓</span>
+      <span class="serif" style="font-weight:700;color:var(--berry-600);font-size:1.05rem;line-height:1.2">Strawberry Patch<br><span style="font-family:'Lato',sans-serif;font-size:.65rem;font-weight:400;letter-spacing:.15em;text-transform:uppercase;color:var(--earth-500)">Fresh Local Eggs</span></span>
+    </a>
+    <div id="dlinks" style="display:flex;align-items:center;gap:1.5rem">
+      <a href="#flock"    style="font-size:.875rem;color:var(--earth-700);text-decoration:none">The Flock</a>
+      <a href="#products" style="font-size:.875rem;color:var(--earth-700);text-decoration:none">Eggs &amp; Pricing</a>
+      <a href="#about"    style="font-size:.875rem;color:var(--earth-700);text-decoration:none">Our Story</a>
+      <a href="#order" class="btn btn-red" style="padding:.5rem 1.25rem;font-size:.875rem">Order Now</a>
+    </div>
+    <button id="burger" onclick="toggleMenu()" style="display:none;background:none;border:none;cursor:pointer;padding:.5rem;color:var(--earth-700)">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+  <div id="mmenu" style="display:none;background:var(--cream-100);border-top:1px solid var(--cream-200);padding:.75rem 1rem;flex-direction:column;gap:.75rem">
+    <a href="#flock"    onclick="closeMenu()" style="font-size:.875rem;color:var(--earth-700);text-decoration:none">The Flock</a>
+    <a href="#products" onclick="closeMenu()" style="font-size:.875rem;color:var(--earth-700);text-decoration:none">Eggs &amp; Pricing</a>
+    <a href="#about"    onclick="closeMenu()" style="font-size:.875rem;color:var(--earth-700);text-decoration:none">Our Story</a>
+    <a href="#order"    onclick="closeMenu()" class="btn btn-red" style="text-align:center;padding:.65rem 1rem">Order Now</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" style="min-height:100vh;display:flex;align-items:center;padding-top:5rem;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--berry-50) 0%,var(--cream-50) 50%,var(--cream-100) 100%)">
+  <div style="position:absolute;top:-4rem;right:-4rem;width:22rem;height:22rem;border-radius:9999px;background:rgba(254,205,211,.35);filter:blur(60px)"></div>
+  <div style="position:absolute;bottom:6rem;left:-6rem;width:26rem;height:26rem;border-radius:9999px;background:rgba(250,232,224,.3);filter:blur(60px)"></div>
+
+  <!-- Strawberry decorative dots -->
+  <div style="position:absolute;top:8rem;right:2rem;font-size:2.5rem;opacity:.12;transform:rotate(15deg)">🍓</div>
+  <div style="position:absolute;bottom:12rem;left:1rem;font-size:2rem;opacity:.1;transform:rotate(-10deg)">🍓</div>
+
+  <div id="hgrid" style="position:relative;max-width:72rem;margin:0 auto;padding:4rem 1rem;display:grid;grid-template-columns:1fr;gap:3rem;align-items:center">
+    <div>
+      <span class="fu0" style="display:inline-flex;align-items:center;gap:.4rem;background:var(--berry-100);color:var(--berry-700);font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.3rem .9rem;border-radius:9999px;margin-bottom:1rem">
+        🍓 Pasture-Raised · Local · Fresh
+      </span>
+      <h1 class="fu1" style="font-size:clamp(2.4rem,7vw,3.75rem);color:var(--earth-800);line-height:1.15;margin:.5rem 0 1.25rem">
+        Sweeter than the patch,<br><em style="color:var(--berry-600)">fresher than the store.</em>
+      </h1>
+      <p class="fu2" style="color:var(--earth-600);font-size:1.05rem;line-height:1.7;max-width:38rem;margin-bottom:2rem">
+        At Strawberry Patch Eggs, our happy backyard flock roams freely, eats well, and lays eggs that make the grocery aisle look embarrassing. Same-day pickup. No middleman. No mystery.
+      </p>
+      <div class="fu3" style="display:flex;flex-wrap:wrap;gap:.75rem;margin-bottom:2.5rem">
+        <a href="#products" class="btn btn-red">Check Availability</a>
+        <a href="#order"    class="btn btn-outline">Place an Order</a>
+      </div>
+      <div class="fu3" style="display:flex;flex-wrap:wrap;gap:1rem">
+        <span style="font-size:.85rem;color:var(--earth-500)">🌿 No hormones or antibiotics</span>
+        <span style="font-size:.85rem;color:var(--earth-500)">☀️ Pasture-raised daily</span>
+        <span style="font-size:.85rem;color:var(--earth-500)">📍 Local pickup only</span>
+      </div>
+    </div>
+
+    <!-- Egg cluster -->
+    <div style="display:flex;justify-content:center;padding:2rem 0">
+      <div class="float-slow" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
+        <div style="display:flex;flex-direction:column;gap:1rem;align-items:center">
+          <div class="egg" style="width:4rem;height:5rem;background:linear-gradient(to bottom,#fffbeb,#fef3c7);box-shadow:0 4px 12px rgba(251,191,36,.2)"></div>
+          <div class="egg" style="width:3.5rem;height:4.5rem;background:linear-gradient(to bottom,#f5f5f4,#e7e5e4);box-shadow:0 4px 8px rgba(0,0,0,.08)"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.75rem;align-items:center;padding-top:1.5rem">
+          <div class="egg" style="width:5rem;height:6rem;background:linear-gradient(to bottom,#92400e90,#78350fbb);box-shadow:0 6px 20px rgba(120,53,15,.3)"></div>
+          <div class="egg" style="width:3rem;height:3.75rem;background:linear-gradient(to bottom,#c7b89a,#a08060);box-shadow:0 4px 8px rgba(0,0,0,.1)"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:1rem;align-items:center;padding-top:.5rem">
+          <div class="egg" style="width:4rem;height:5rem;background:linear-gradient(to bottom,#dbeafe,#cbd5e1);box-shadow:0 4px 12px rgba(96,165,250,.2)"></div>
+          <div class="egg" style="width:3.5rem;height:4.5rem;background:linear-gradient(to bottom,#dcfce7,#a7f3d0);box-shadow:0 4px 8px rgba(52,211,153,.15)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none" style="fill:var(--cream-50)">
+    <path d="M0,64L48,58.7C96,53,192,43,288,48C384,53,480,75,576,74.7C672,75,768,53,864,42.7C960,32,1056,32,1152,37.3C1248,43,1344,53,1392,58.7L1440,64L1440,80L0,80Z"/>
+  </svg>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products" style="padding:5rem 1rem;background:var(--cream-50)">
+  <div style="max-width:72rem;margin:0 auto">
+    <div style="text-align:center;margin-bottom:3.5rem">
+      <span style="color:var(--berry-600);font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase">Today's Nesting Box Report</span>
+      <h2 style="font-size:2.5rem;color:var(--earth-800);margin:.5rem 0 .75rem">Eggs &amp; Pricing</h2>
+      <p style="color:var(--earth-500);max-width:36rem;margin:0 auto;line-height:1.6">Prices per dozen unless noted. Stock updates daily — our hens are hard workers, but even they take the occasional Sunday off.</p>
+    </div>
+
+    <div id="pgrid" style="display:grid;grid-template-columns:1fr;gap:1.5rem">
+
+      <!-- Chicken -->
+      <div class="card">
+        <div style="height:9rem;background:linear-gradient(135deg,var(--berry-50),var(--cream-100));display:flex;align-items:center;justify-content:center;position:relative">
+          <div style="display:flex;gap:.75rem;align-items:center">
+            <div class="egg" style="width:2.5rem;height:3rem;background:linear-gradient(to bottom,#92400e80,#78350faa)"></div>
+            <div class="egg" style="width:2.5rem;height:3rem;background:linear-gradient(to bottom,#dbeafe,#bfdbfe)"></div>
+            <div class="egg" style="width:2.5rem;height:3rem;background:linear-gradient(to bottom,#fffbeb,#fef3c7);border:1px solid #fde68a"></div>
+          </div>
+          <div id="bc" style="position:absolute;top:.75rem;right:.75rem"></div>
+        </div>
+        <div style="padding:1.5rem">
+          <h3 style="font-size:1.6rem;color:var(--earth-800);margin:0 0 .25rem">Chicken Eggs</h3>
+          <p style="font-weight:700;font-size:1.25rem;color:var(--berry-600);margin:0 0 .75rem">$5 <span style="font-weight:400;font-size:.875rem;color:var(--earth-400)">/ dozen</span></p>
+          <p style="color:var(--earth-500);font-size:.875rem;line-height:1.65;margin:0 0 1.25rem">Large, multi-colored eggs from our pasture-roaming flock. Every carton is a little rainbow — brown, blue, green, cream. Our hens consider themselves <em>over-achievers.</em></p>
+          <button onclick="startOrder('Chicken Eggs')" class="btn-block">Order Chicken Eggs</button>
+        </div>
+      </div>
+
+      <!-- Duck -->
+      <div class="card">
+        <div style="height:9rem;background:linear-gradient(135deg,#f8fafc,var(--cream-100));display:flex;align-items:center;justify-content:center;position:relative">
+          <div style="display:flex;gap:.75rem;align-items:flex-end">
+            <div class="egg" style="width:3rem;height:3.5rem;background:linear-gradient(to bottom,#f1f5f9,#e2e8f0)"></div>
+            <div class="egg" style="width:3.5rem;height:4rem;background:linear-gradient(to bottom,#fafaf9,#f5f5f4);border:1px solid #e7e5e4"></div>
+            <div class="egg" style="width:3rem;height:3.5rem;background:linear-gradient(to bottom,#eff6ff,#bfdbfe)"></div>
+          </div>
+          <div id="bd" style="position:absolute;top:.75rem;right:.75rem"></div>
+        </div>
+        <div style="padding:1.5rem">
+          <h3 style="font-size:1.6rem;color:var(--earth-800);margin:0 0 .25rem">Duck Eggs</h3>
+          <p style="font-weight:700;font-size:1.25rem;color:var(--berry-600);margin:0 0 .75rem">$7 <span style="font-weight:400;font-size:.875rem;color:var(--earth-400)">/ half dozen</span></p>
+          <p style="color:var(--earth-500);font-size:.875rem;line-height:1.65;margin:0 0 1.25rem">Rich, creamy, and larger than chicken eggs. Bakers swear by them — more fat, more flavor, fluffier results. If your banana bread has been mid, duck eggs are the glow-up it deserves.</p>
+          <button onclick="startOrder('Duck Eggs')" class="btn-block">Order Duck Eggs</button>
+        </div>
+      </div>
+
+      <!-- Quail -->
+      <div class="card">
+        <div style="height:9rem;background:linear-gradient(135deg,#fafaf9,var(--berry-50));display:flex;align-items:center;justify-content:center;position:relative">
+          <div style="display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;max-width:8rem;justify-content:center">
+            <div class="egg" style="width:1.4rem;height:1.8rem;background:linear-gradient(to bottom,#d4c5a0,#b8a07a)"></div>
+            <div class="egg" style="width:1.4rem;height:1.8rem;background:linear-gradient(to bottom,#c8b898,#a08060)"></div>
+            <div class="egg" style="width:1.6rem;height:2rem;background:linear-gradient(to bottom,#d8c8a8,#c0a080)"></div>
+            <div class="egg" style="width:1.4rem;height:1.8rem;background:linear-gradient(to bottom,#c0b090,#988060)"></div>
+            <div class="egg" style="width:1.4rem;height:1.8rem;background:linear-gradient(to bottom,#dcc8a0,#b09070)"></div>
+            <div class="egg" style="width:1.6rem;height:2rem;background:linear-gradient(to bottom,#d0c0a0,#a88060)"></div>
+          </div>
+          <div id="bq" style="position:absolute;top:.75rem;right:.75rem"></div>
+        </div>
+        <div style="padding:1.5rem">
+          <h3 style="font-size:1.6rem;color:var(--earth-800);margin:0 0 .25rem">Quail Eggs</h3>
+          <p style="font-weight:700;font-size:1.25rem;color:var(--berry-600);margin:0 0 .75rem">$6 <span style="font-weight:400;font-size:.875rem;color:var(--earth-400)">/ 18 count</span></p>
+          <p style="color:var(--earth-500);font-size:.875rem;line-height:1.65;margin:0 0 1.25rem">Tiny, nutrient-dense, and adorably speckled. High in B12, iron, and compliments at brunch. Charcuterie boards have been requesting them by name.</p>
+          <button onclick="startOrder('Quail Eggs')" class="btn-block">Order Quail Eggs</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:2rem;background:#fff1f2;border:1px solid #fecdd3;border-radius:1rem;padding:1.1rem;text-align:center;font-size:.875rem;color:var(--berry-700)">
+      <strong>⚠️ Please wait for a confirmation text before sending payment</strong> — we want to make sure the nesting boxes are stocked for you!
+    </div>
+  </div>
+</section>
+
+<!-- FLOCK -->
+<section id="flock" style="padding:5rem 1rem;background:var(--berry-50)">
+  <div style="max-width:72rem;margin:0 auto">
+    <div style="text-align:center;margin-bottom:3.5rem">
+      <span style="color:var(--berry-600);font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase">Meet the Team</span>
+      <h2 style="font-size:2.5rem;color:var(--earth-800);margin:.5rem 0 .75rem">The Flock</h2>
+      <p style="color:var(--earth-500);max-width:30rem;margin:0 auto">No résumés required. Every member earns their keep — except the rabbits, who are just executive-level cute.</p>
+    </div>
+    <div id="fgrid" style="display:grid;grid-template-columns:1fr;gap:1.25rem">
+      <div style="background:#fff;border-radius:1.5rem;padding:1.5rem;text-align:center;border:1px solid var(--berry-100)"><div style="font-size:2.75rem;margin-bottom:.75rem">🐔</div><h3 style="font-size:1.3rem;color:var(--earth-800);margin:0 0 .25rem">The Chickens</h3><p style="font-size:.78rem;font-weight:700;color:var(--berry-600);margin:0 0 .75rem">Head Egg Division</p><p style="color:var(--earth-500);font-size:.875rem;line-height:1.6">Barred Rocks, Easter Eggers &amp; Rhode Island Reds. Free-range by day, cozy coop by night. Motivated by scratch grain and neighborhood gossip.</p></div>
+      <div style="background:#fff;border-radius:1.5rem;padding:1.5rem;text-align:center;border:1px solid var(--berry-100)"><div style="font-size:2.75rem;margin-bottom:.75rem">🦆</div><h3 style="font-size:1.3rem;color:var(--earth-800);margin:0 0 .25rem">The Ducks</h3><p style="font-size:.78rem;font-weight:700;color:var(--berry-600);margin:0 0 .75rem">Premium Egg Specialists</p><p style="color:var(--earth-500);font-size:.875rem;line-height:1.6">Khaki Campbells — prolific layers and enthusiastic puddle-finders. Their eggs are baker gold.</p></div>
+      <div style="background:#fff;border-radius:1.5rem;padding:1.5rem;text-align:center;border:1px solid var(--berry-100)"><div style="font-size:2.75rem;margin-bottom:.75rem">🐦</div><h3 style="font-size:1.3rem;color:var(--earth-800);margin:0 0 .25rem">The Quail</h3><p style="font-size:.78rem;font-weight:700;color:var(--berry-600);margin:0 0 .75rem">Boutique Egg Producers</p><p style="color:var(--earth-500);font-size:.875rem;line-height:1.6">Coturnix quail — tiny, fast, and intensely productive. What they lack in size they make up for in pure speckled attitude.</p></div>
+      <div style="background:#fff;border-radius:1.5rem;padding:1.5rem;text-align:center;border:1px solid var(--berry-100)"><div style="font-size:2.75rem;margin-bottom:.75rem">🐇</div><h3 style="font-size:1.3rem;color:var(--earth-800);margin:0 0 .25rem">The Rabbits</h3><p style="font-size:.78rem;font-weight:700;color:var(--berry-600);margin:0 0 .75rem">Manure Dept. &amp; Morale</p><p style="color:var(--earth-500);font-size:.875rem;line-height:1.6">Officially listed as "ambient cuteness managers" on the patch org chart. Not for sale. Non-negotiable.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="padding:5rem 1rem;background:var(--cream-50)">
+  <div id="agrid" style="max-width:64rem;margin:0 auto;display:grid;grid-template-columns:1fr;gap:3rem;align-items:center">
+    <div>
+      <span style="color:var(--berry-600);font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase">Our Story</span>
+      <h2 style="font-size:2.25rem;color:var(--earth-800);margin:.5rem 0 1.5rem;line-height:1.2">Why Fresh Eggs<br><em>Actually</em> Matter</h2>
+      <div style="color:var(--earth-600);line-height:1.75;display:flex;flex-direction:column;gap:1rem">
+        <p style="margin:0">That carton of "Grade A Large" eggs sitting on the grocery shelf? It may be up to 60 days old. Legally fine. But legal isn't the same as what you actually want for your family's breakfast.</p>
+        <p style="margin:0">At Strawberry Patch Eggs, our eggs go from nest to your hands within <strong style="color:var(--earth-800)">24–48 hours</strong>. Deeper orange yolks. Firmer whites. Flavor that turns a Tuesday morning into something worth waking up for.</p>
+        <p style="margin:0">We started this because we wanted to know exactly what was going into our food — and into our kids' food. Our birds eat a non-GMO diet, forage freely on pasture, and are never given growth hormones or preventive antibiotics. Happy birds. Better eggs. Simple as that.</p>
+        <p style="margin:0;color:var(--berry-700);font-style:italic;font-weight:600">"We don't just sell eggs. We sell the alternative to not knowing where your food comes from."</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem">
+        <div style="background:var(--berry-50);border-radius:1rem;padding:1rem;text-align:center"><div class="serif" style="font-size:2rem;color:var(--berry-600)">24h</div><div style="font-size:.72rem;color:var(--earth-500);margin-top:.25rem">Nest to doorstep</div></div>
+        <div style="background:var(--berry-50);border-radius:1rem;padding:1rem;text-align:center"><div class="serif" style="font-size:2rem;color:var(--berry-600)">100%</div><div style="font-size:.72rem;color:var(--earth-500);margin-top:.25rem">Pasture raised</div></div>
+        <div style="background:var(--berry-50);border-radius:1rem;padding:1rem;text-align:center"><div class="serif" style="font-size:2rem;color:var(--berry-600)">0</div><div style="font-size:.72rem;color:var(--earth-500);margin-top:.25rem">Mystery ingredients</div></div>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div style="border-radius:1.5rem;background:linear-gradient(135deg,var(--berry-100),var(--cream-200));height:22rem;display:flex;align-items:center;justify-content:center">
+        <div style="text-align:center;padding:2rem"><div style="font-size:4rem;margin-bottom:1rem">🍓</div><p style="color:var(--earth-400);font-size:.875rem;font-style:italic;margin:0">[ Your farm photo here ]<br>Recommended: 800×600px</p></div>
+      </div>
+      <div style="position:absolute;bottom:-1rem;right:-1rem;width:5rem;height:5rem;background:var(--berry-200);border-radius:9999px;display:flex;align-items:center;justify-content:center;font-size:2rem;box-shadow:0 4px 16px rgba(0,0,0,.1)">🥚</div>
+    </div>
+  </div>
+</section>
+
+<!-- ORDER -->
+<section id="order" style="padding:5rem 1rem;background:var(--berry-600)">
+  <div style="max-width:40rem;margin:0 auto">
+    <div style="text-align:center;margin-bottom:2.5rem">
+      <span style="color:rgba(255,255,255,.6);font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase">Skip the Grocery Run</span>
+      <h2 style="font-size:2.5rem;color:#fff;margin:.5rem 0 .75rem">Place Your Order</h2>
+      <p style="color:rgba(255,255,255,.78);line-height:1.6">Fill out the form, hit 'Send via Text,' and we'll confirm your pickup. Faster than driving to the store, tastier than anything you'd find there.</p>
+    </div>
+
+    <div id="oform" style="background:#fff;border-radius:1.5rem;padding:2rem;box-shadow:0 20px 60px rgba(0,0,0,.2)">
+      <div style="display:flex;flex-direction:column;gap:1.25rem">
+        <div><label style="display:block;font-weight:700;font-size:.875rem;margin-bottom:.5rem;color:var(--earth-700)">Your Name</label>
+          <input id="fn" type="text" placeholder="e.g. Sarah Johnson" class="fi"></div>
+        <div><label style="display:block;font-weight:700;font-size:.875rem;margin-bottom:.5rem;color:var(--earth-700)">Egg Type</label>
+          <select id="ft" class="fi">
+            <option value="">— Select your eggs —</option>
+            <option value="Chicken Eggs">🐔 Chicken Eggs ($5/dozen)</option>
+            <option value="Duck Eggs">🦆 Duck Eggs ($7/half dozen)</option>
+            <option value="Quail Eggs">🐦 Quail Eggs ($6/18 count)</option>
+            <option value="Mixed Eggs">🥚 Mix it up (we'll sort it out)</option>
+          </select></div>
+        <div><label style="display:block;font-weight:700;font-size:.875rem;margin-bottom:.5rem;color:var(--earth-700)">Quantity</label>
+          <input id="fq" type="text" placeholder="e.g. 2 dozen" class="fi"></div>
+        <div>
+          <label style="display:block;font-weight:700;font-size:.875rem;margin-bottom:.5rem;color:var(--earth-700)">Payment Method</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem">
+            <div class="pr"><input type="radio" id="pv" name="pay" value="Venmo"><label for="pv">💙 Venmo</label></div>
+            <div class="pr"><input type="radio" id="pz" name="pay" value="Zelle"><label for="pz">💜 Zelle</label></div>
+            <div class="pr"><input type="radio" id="pc" name="pay" value="Cash"><label for="pc">💵 Cash</label></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ferr" style="display:none;margin-top:1rem;background:#fff1f2;border:1px solid #fecdd3;color:var(--berry-700);font-size:.875rem;border-radius:.75rem;padding:.75rem 1rem"></div>
+
+      <div style="margin-top:1.5rem">
+        <a href="#" onclick="doSms(event)" class="btn-block" style="font-size:1rem;padding:1rem;display:block">📱 Send Order via Text</a>
+        <p style="color:#9ca3af;font-size:.75rem;text-align:center;margin:.75rem 0 0">Opens your Messages app with a pre-filled order. We'll confirm within a few hours.</p>
+      </div>
+      <div style="margin-top:1rem;text-align:center">
+        <button onclick="openModal()" style="background:none;border:none;color:var(--berry-600);font-weight:700;font-size:.875rem;cursor:pointer;text-decoration:underline;text-underline-offset:.2rem">View Payment Options (Venmo / Zelle / Cash)</button>
+      </div>
+    </div>
+
+    <div id="ty" style="display:none;background:#fff;border-radius:1.5rem;padding:2.5rem;box-shadow:0 20px 60px rgba(0,0,0,.2);text-align:center">
+      <div style="font-size:4rem;margin-bottom:1rem">🍓</div>
+      <h3 style="font-size:1.75rem;color:var(--earth-800);margin:0 0 .75rem">Thanks for supporting local hens!</h3>
+      <p style="color:var(--earth-600);line-height:1.65">We'll text you shortly to confirm your pickup time. Your eggs were probably laid this morning — they're still basically warm from the patch.</p>
+      <button onclick="resetForm()" class="btn btn-red" style="margin-top:1.5rem">Order Again</button>
+    </div>
+  </div>
+</section>
+
+<!-- PAYMENT MODAL -->
+<div id="modal">
+  <div class="mbox">
+    <div style="padding:1.5rem;border-bottom:1px solid var(--cream-200);display:flex;align-items:center;justify-content:space-between">
+      <h3 style="font-size:1.5rem;color:var(--earth-800);margin:0">How to Pay</h3>
+      <button onclick="closeModal()" style="width:2.25rem;height:2.25rem;background:var(--cream-100);border:none;border-radius:9999px;cursor:pointer;font-size:1rem;color:var(--earth-500)">✕</button>
+    </div>
+    <div style="padding:1.5rem;display:flex;flex-direction:column;gap:1.25rem">
+      <div style="background:#eff6ff;border-radius:1rem;padding:1.25rem">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem"><span style="font-size:1.5rem">💙</span><h4 style="color:#1e40af;margin:0;font-size:1.1rem">Venmo</h4></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:1rem">
+          <!-- Replace src with your actual Venmo QR screenshot -->
+          <img src="https://placehold.co/112x112/dbeafe/1d4ed8?text=Venmo+QR" alt="Venmo QR" style="width:7rem;height:7rem;border-radius:.75rem;border:2px solid #bfdbfe">
+          <div><p style="font-weight:700;font-size:1.1rem;color:#1e40af;margin:0 0 .25rem">@YourVenmoHandle</p><p style="color:#3b82f6;font-size:.875rem;margin:0">Scan QR or search our handle. Include your name &amp; egg type in the note!</p></div>
+        </div>
+      </div>
+      <div style="background:#faf5ff;border-radius:1rem;padding:1.25rem">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem"><span style="font-size:1.5rem">💜</span><h4 style="color:#6b21a8;margin:0;font-size:1.1rem">Zelle</h4></div>
+        <p style="color:#7c3aed;font-size:.875rem;margin:0 0 .5rem">Send via your banking app to:</p>
+        <div style="background:#fff;border-radius:.75rem;padding:.75rem 1rem;border:1px solid #e9d5ff"><p style="font-weight:700;color:#6b21a8;margin:0 0 .2rem">📱 (555) 000-0000</p><p style="color:#a78bfa;font-size:.75rem;margin:0">or: your@email.com</p></div>
+        <p style="color:#7c3aed;font-size:.75rem;margin:.5rem 0 0">Include "Egg Order – [your name]" in memo.</p>
+      </div>
+      <div style="background:#f0fdf4;border-radius:1rem;padding:1.25rem">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem"><span style="font-size:1.5rem">💵</span><h4 style="color:#166534;margin:0;font-size:1.1rem">Cash on Pickup</h4></div>
+        <p style="color:#16a34a;font-size:.875rem;margin:0">Exact change preferred — our hens don't make great cashiers. We'll confirm the total when we text you your pickup time.</p>
+      </div>
+      <div style="background:#fff1f2;border:1px solid #fecdd3;border-radius:1rem;padding:1rem;text-align:center;font-size:.875rem;font-weight:700;color:var(--berry-700)">⚠️ Please wait for our confirmation text before sending payment!</div>
+    </div>
+    <div style="padding:0 1.5rem 1.5rem"><button onclick="closeModal()" class="btn-block">Got it, thanks!</button></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer style="background:var(--earth-800);color:#f2e9de;padding:3rem 1rem">
+  <div id="fgr" style="max-width:64rem;margin:0 auto;display:grid;grid-template-columns:1fr;gap:2rem">
+    <div>
+      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem"><span style="font-size:1.5rem">🍓</span><span class="serif" style="font-weight:700;color:#f2e9de;font-size:1.05rem">Strawberry Patch Eggs</span></div>
+      <p style="color:#c4b5a0;font-size:.875rem;line-height:1.6;margin:0">Pasture-raised eggs from our backyard to your kitchen. Small flock. Big flavor. Zero industrial nonsense.</p>
+    </div>
+    <div>
+      <h4 style="color:#f2e9de;margin:0 0 .75rem;font-family:'Lato',sans-serif">Quick Links</h4>
+      <div style="display:flex;flex-direction:column;gap:.5rem">
+        <a href="#flock"    style="color:#c4b5a0;font-size:.875rem;text-decoration:none">The Flock</a>
+        <a href="#products" style="color:#c4b5a0;font-size:.875rem;text-decoration:none">Eggs &amp; Pricing</a>
+        <a href="#about"    style="color:#c4b5a0;font-size:.875rem;text-decoration:none">Our Story</a>
+        <a href="#order"    style="color:#c4b5a0;font-size:.875rem;text-decoration:none">Place an Order</a>
+      </div>
+    </div>
+    <div>
+      <h4 style="color:#f2e9de;margin:0 0 .75rem;font-family:'Lato',sans-serif">Contact</h4>
+      <p style="color:#c4b5a0;font-size:.875rem;margin:0 0 .5rem">Orders via text only.<br>We're usually out in the patch.</p>
+      <p style="color:#e0c9b5;font-weight:600;font-size:.875rem;margin:0 0 .25rem">📱 (555) 000-0000</p>
+      <p style="color:#a08070;font-size:.75rem;margin:0">Local pickup only · [Your City, State]</p>
+    </div>
+  </div>
+  <div style="max-width:64rem;margin:2.5rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,.1);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem">
+    <p style="color:#78604e;font-size:.75rem;margin:0">© 2025 Strawberry Patch Eggs. All rights reserved.</p>
+    <p style="color:#78604e;font-size:.75rem;font-style:italic;margin:0">🍓 "Why did the egg cross the road? To get to the <em>Strawberry Patch.</em>"</p>
+  </div>
+</footer>
+
 <script>
-/* --- Standardized Logic --- */
-let S = { setup: false, profile: { name:'', farm:'Strawberry Patch Eggs', phone:'', avatar:'🧑‍🌾' }, inventory: { duck:0, chicken:0 }, sales: [], collections: [], prices: { duck:.75, chicken:.50, duck12:8, chk12:5 } };
+  /* ═══ INVENTORY: true = In Stock, false = Sold Out ══ */
+  var inventory = { chicken: true, duck: true, quail: false };
 
-function save(){ localStorage.setItem('spe3', JSON.stringify(S)); }
-function load(){ const d = localStorage.getItem('spe3'); if(d) S = JSON.parse(d); }
+  /* ═══ YOUR PHONE (digits only) ══════════════════════ */
+  var PHONE = '5550000000';
 
-/* Updated Navigation with Smooth Scroll */
-function go(id){
-  document.querySelectorAll('.scr').forEach(s => s.classList.remove('on'));
-  const target = document.getElementById('s-' + id);
-  if(target) {
-    target.classList.add('on');
-    target.scrollIntoView({ behavior: 'smooth' });
+  function badge(id, ok) {
+    var el = document.getElementById(id); if(!el) return;
+    if(ok) {
+      el.innerHTML='<span style="display:inline-flex;align-items:center;gap:.35rem;background:#dcfce7;color:#166534;font-size:.68rem;font-weight:700;padding:.2rem .7rem;border-radius:9999px;box-shadow:0 1px 4px rgba(0,0,0,.1)"><span class="pdot" style="width:.45rem;height:.45rem;background:#22c55e;border-radius:9999px;display:inline-block"></span>In Stock</span>';
+    } else {
+      el.innerHTML='<span style="display:inline-flex;align-items:center;gap:.35rem;background:#fee2e2;color:#b91c1c;font-size:.68rem;font-weight:700;padding:.2rem .7rem;border-radius:9999px;box-shadow:0 1px 4px rgba(0,0,0,.1)"><span style="width:.45rem;height:.45rem;background:#f87171;border-radius:9999px;display:inline-block"></span>Sold Out</span>';
+    }
   }
-}
+  badge('bc',inventory.chicken); badge('bd',inventory.duck); badge('bq',inventory.quail);
 
-/* Updated sendText with OneSignal Tagging */
-function sendText(){
-  const name = document.getElementById('cu-name').value.trim();
-  const phone = document.getElementById('cu-phone').value.trim();
-  if(!name || !phone) { toast('Name and phone required', 'err'); return; }
+  function startOrder(t){ document.getElementById('ft').value=t; document.getElementById('order').scrollIntoView({behavior:'smooth'}); setTimeout(function(){document.getElementById('fn').focus();},700); }
 
-  window.OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.User.addTag("customer_name", name);
-  });
+  function doSms(e){
+    e.preventDefault();
+    var n=document.getElementById('fn').value.trim(), t=document.getElementById('ft').value,
+        q=document.getElementById('fq').value.trim(), p=document.querySelector('input[name="pay"]:checked'),
+        err=document.getElementById('ferr');
+    err.style.display='none';
+    if(!n||!t||!q||!p){err.textContent='Please fill in all fields and choose a payment method.';err.style.display='block';return;}
+    var msg=encodeURIComponent("Hi! I'd like to order "+q+" of "+t+". My name is "+n+". I'll pay via "+p.value+".");
+    var sep=/iPhone|iPad|Android/i.test(navigator.userAgent)?'&':'?';
+    window.open('sms:'+PHONE+sep+'body='+msg,'_blank');
+    document.getElementById('oform').style.display='none';
+    document.getElementById('ty').style.display='block';
+  }
 
-  const ppu = cuType === 'duck' ? S.prices.duck : S.prices.chicken;
-  const tot = (ppu * cuQty).toFixed(2);
-  const msg = `Hi! I'd like to order ${cuQty} ${cuType} eggs from ${S.profile.farm}. Est Total: $${tot}. - ${name}`;
-  window.location.href = `sms:${(S.profile.phone || '').replace(/\D/g,'')}?body=${encodeURIComponent(msg)}`;
-}
+  function resetForm(){
+    document.getElementById('oform').style.display='block'; document.getElementById('ty').style.display='none';
+    ['fn','fq'].forEach(function(id){document.getElementById(id).value='';});
+    document.getElementById('ft').value='';
+    var c=document.querySelector('input[name="pay"]:checked'); if(c) c.checked=false;
+  }
 
-// Add the rest of your repo's JS functions here
+  function openModal(){document.getElementById('modal').classList.add('open');document.body.style.overflow='hidden';}
+  function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';}
+  document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+  window.addEventListener('scroll',function(){document.getElementById('nav').classList.toggle('scrolled',scrollY>10);});
+
+  function toggleMenu(){var m=document.getElementById('mmenu');m.style.display=m.style.display==='flex'?'none':'flex';m.style.flexDirection='column';}
+  function closeMenu(){document.getElementById('mmenu').style.display='none';}
+
+  function grids(){
+    var w=window.innerWidth;
+    var c2=w>=640?'1fr 1fr':'1fr', c3=w>=1024?'1fr 1fr 1fr':c2, c4=w>=1024?'1fr 1fr 1fr 1fr':c2;
+    var pg=document.getElementById('pgrid'); if(pg) pg.style.gridTemplateColumns=c3;
+    var fg=document.getElementById('fgrid'); if(fg) fg.style.gridTemplateColumns=c4;
+    var ag=document.getElementById('agrid'); if(ag) ag.style.gridTemplateColumns=w>=768?'1fr 1fr':'1fr';
+    var fr=document.getElementById('fgr');   if(fr) fr.style.gridTemplateColumns=w>=640?'1fr 1fr 1fr':'1fr';
+    var hg=document.getElementById('hgrid'); if(hg) hg.style.gridTemplateColumns=w>=768?'1fr 1fr':'1fr';
+    var dl=document.getElementById('dlinks'),bg=document.getElementById('burger');
+    if(dl&&bg){dl.style.display=w>=768?'flex':'none';bg.style.display=w>=768?'none':'block';}
+  }
+  grids(); window.addEventListener('resize',grids);
 </script>
 </body>
 </html>
